@@ -3,9 +3,10 @@ const express = require("express");
 const compression = require('compression')
 const bodyParser = require("body-parser");
 const cors = require('cors')
-const backendRouter = require('./Router/cardDataRouter');
+const cardDataRouter = require('./Router/cardDataRouter');
+const graphDataRouter = require('./Router/graphDataRouter');
 
-const data = require('./testData/sample');
+const data = require('./testData/loadData');
 
 const app = express();
 app.use(compression({}));
@@ -30,7 +31,8 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-app.use("/", backendRouter);
+app.use("/", cardDataRouter);
+app.use("/", graphDataRouter);
 
 const listener = app.listen(5000,  () => {
     console.log("Your app is listening on port " + listener.address().port);
