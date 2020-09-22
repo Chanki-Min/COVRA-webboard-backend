@@ -21,15 +21,28 @@ const DAY_IN_MILLIS = 1000 * 60 * 60 * 24;
 //TODO : 계산결과를 global 객체에 캐싱하기 (global.data 가 변경되지 않는 이상, 여러번 계산하는건 필요없음)
 router.get(
     "/nationalStatus",
-    wrapAsyncFn(async (req, res) => {
+    (req, res) => {
         try {
-            const result = getNationStatus(req.query.nation, req.query.dayQ, req.query.weekQ, req.query.monthQ, global.data.death, global.data.confirmed);
+            const result = aggregateDataByTime(req.query.nation, req.query.dayQ, req.query.weekQ, req.query.monthQ, global.data.death, global.data.confirmed);
             res.status(200).send(result);
         } catch (e) {
-            console.error(e);
+            console.error('nationalStatus :: ' + e);
             res.status(404).send(e.message);
         }
-    })
+    }
+);
+
+router.get(
+    "/nationalPrediction",
+    (req, res) => {
+        try {
+            const result = aggregateDataByTime(req.query.nation, req.query.dayQ, req.query.weekQ, req.query.monthQ, global.data.deathPrediction, global.data.confirmedPrediction, req.query.endDate)
+            res.status(200).send(result);
+        } catch (e) {
+            console.error('nationalPrediction :: ' + e);
+            res.status(404).send(e.message);
+        }
+    }
 );
 
 router.get(
@@ -52,19 +65,26 @@ router.get(
     })
 );
 
-function getNationStatus(
+function aggregateDataByTime(
     nation,
     dayQ,
     weekQ,
     monthQ,
     deathData,
-    confirmedData
+    confirmedData,
+    endDate
 ) {
     if (deathData[nation] === undefined || confirmedData[nation] === undefined) {
         throw new TypeError(`getNationStatus :: got unsupported nation request. ${nation}`);
     }
 
-    let todayDate = new Date();
+    let todayDate;
+    if(endDate === undefined) {
+        todayDate = new Date();
+    } else {
+        todayDate = endDate instanceof  Date ? endDate : new Date(endDate);
+    }
+
     const deathFrom = new Date(deathData.from);
     const confirmedFrom = new Date(confirmedData.from);
 
