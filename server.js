@@ -5,12 +5,12 @@ const bodyParser = require("body-parser");
 const cors = require('cors')
 const cardDataRouter = require('./Router/cardDataRouter');
 const graphDataRouter = require('./Router/graphDataRouter');
+const updateRouter = require('./Router/updateRouter');
 
-const data = require('./testData/loadData');
+const data = require('./Data/loadData');
 
 const app = express();
 app.use(compression({}));
-app.use(bodyParser.json({limit: "50mb"}));
 
 global.countries = [
     'Australia', 'Austria', 'Belgium', 'Canada', 'Chile', 'Denmark',
@@ -33,6 +33,7 @@ app.use(cors(corsOptions));
 
 app.use("/", cardDataRouter);
 app.use("/", graphDataRouter);
+app.use("/", updateRouter);
 
 const listener = app.listen(5000,  () => {
     console.log("Your app is listening on port " + listener.address().port);
