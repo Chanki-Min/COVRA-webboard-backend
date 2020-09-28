@@ -1,18 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const {ungzip} = require("node-gzip");
-const fs = require('fs');
-const path = require('path');
-
-const wrapAsyncFn = asyncFn => {
-    return (async (req, res, next) => {
-        try {
-            return await asyncFn(req, res, next)
-        } catch (error) {
-            return next(error)
-        }
-    })
-}
+const wrapAsyncFn = require('../Utils/wrapAsyncFn');
 
 
 router.get("/nationalDeath", wrapAsyncFn(async (req, res) => {

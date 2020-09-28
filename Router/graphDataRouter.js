@@ -6,16 +6,7 @@ const path = require("path");
 const dateUtil = require('../Utils/dateUtil');
 const moment = require('moment');
 const TIME_FORMAT = "YYYY-MM-DD";
-
-const wrapAsyncFn = (asyncFn) => {
-    return async (req, res, next) => {
-        try {
-            return await asyncFn(req, res, next);
-        } catch (error) {
-            return next(error);
-        }
-    };
-};
+const wrapAsyncFn = require('../Utils/wrapAsyncFn');
 const DAY_IN_MILLIS = 1000 * 60 * 60 * 24;
 
 //TODO : 계산결과를 global 객체에 캐싱하기 (global.data 가 변경되지 않는 이상, 여러번 계산하는건 필요없음)
