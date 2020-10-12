@@ -35,7 +35,7 @@ app.use("/", cardDataRouter);
 app.use("/", graphDataRouter);
 app.use("/", updateRouter);
 
-const listener = app.listen(5000,  () => {
-    console.log("Your app is listening on port " + listener.address().port);
+const listener = app.listen(parseInt(process.env.PORT, 10) , process.env.URL, () => {
+    console.log("Your app is listening on  " + listener.address());
 });
 
