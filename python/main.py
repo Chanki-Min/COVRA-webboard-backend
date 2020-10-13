@@ -55,7 +55,8 @@ def scale_to_date (scale) :
                     2.44,
                     2.74,
                     3.05,
-                    3.35
+                    3.35,
+                    3.66
                 ]
     
     for idx in range(len(month_scale_list)) :
