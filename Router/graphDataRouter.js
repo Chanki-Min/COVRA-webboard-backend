@@ -13,6 +13,12 @@ const DAY_IN_MILLIS = 1000 * 60 * 60 * 24;
 router.get(
     "/nationalStatus",
     (req, res) => {
+        if(global.data === undefined) {
+            res.status(404).send({
+                error: `no data;`
+            });
+            return;
+        }
         try {
             const result = aggregateDataByTime(req.query.nation, req.query.dayQ, req.query.weekQ, req.query.monthQ, global.data.death, global.data.confirmed);
             res.status(200).send(result);
@@ -26,6 +32,12 @@ router.get(
 router.get(
     "/nationalPrediction",
     (req, res) => {
+        if(global.data === undefined) {
+            res.status(404).send({
+                error: `no data;`
+            });
+            return;
+        }
         try {
             const result = aggregateDataByTime(req.query.nation, req.query.dayQ, req.query.weekQ, req.query.monthQ, global.data.deathPrediction, global.data.confirmedPrediction, req.query.endDate)
             res.status(200).send(result);
@@ -43,6 +55,12 @@ router.get(
         if(nation === undefined) {
             console.warn('cladeStatus :: got request with no param');
             res.status(404).send(`cladeStatus :: require 'nation' parameter.`);
+            return;
+        }
+        if(global.data === undefined) {
+            res.status(404).send({
+                error: `no data;`
+            });
             return;
         }
 
