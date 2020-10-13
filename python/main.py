@@ -36,7 +36,7 @@ def get_data_predict () :
     with open(path_tmp, mode = "r", encoding = "utf-8") as f :
         file_tmp = f.read()
 
-    file_tmp = "{\"" + file_tmp[file_tmp.find("confirmed_death") : -1]
+    file_tmp = "{\"" + file_tmp[file_tmp.find("confirmed_death"):]
 
     return json.loads(file_tmp)["confirmed_death"]
 
@@ -100,7 +100,7 @@ def preprocess_predict_data (list_confirmed_death_predicted) :
     json_data["confirmedPrediction"]["global"] = confirmedPrediction
     json_data["deathPrediction"]["global"] = deathPrediction
 
-    first_scale = 0.08
+    first_scale = 0.11
     plus_scale = round((len(list_confirmed_death_predicted[::2]) - 1) * 0.01, 2)
     end_scale = first_scale + plus_scale
 
